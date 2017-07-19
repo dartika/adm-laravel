@@ -1,0 +1,29 @@
+{
+    "name": "dartika/adm-laravel",
+    "description": "Laravel web admin system",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mbellido",
+            "email": "mbellido@dartika.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4",
+        "laracasts/flash": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.7",
+        "squizlabs/php_codesniffer": "3.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dartika\\Adm\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dartika\\Adm\\Tests\\": "tests"
+        }
+    }
+}
