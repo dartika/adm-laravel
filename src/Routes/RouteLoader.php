@@ -34,6 +34,8 @@ class RouteLoader
     protected function loadDefaultAdmRoutes()
     {
         $this->router->group([
+            'namespace' => 'Dartika\Adm\Http\Controllers',
+            'as' => 'dartika-adm.',
             'prefix' => config('dartika-adm.prefix'),
             'middleware' => ['web'],
         ], function () {
