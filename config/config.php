@@ -33,5 +33,5 @@ return [
     | Install the admin with dartika-adm:install command to populate it.
     */
 
-    'admPath' => 'Adm\\',
+    'admPath' => 'Adm',
 ];
