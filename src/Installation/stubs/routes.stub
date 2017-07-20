@@ -1,5 +1,5 @@
 <?php
 
 Route::get('helloworld', ['as' => 'dartika-adm.helloworld', function () {
-    return 'Hello World';
+    return view('dartika-adm::sections.helloworld.index');
 }]);
