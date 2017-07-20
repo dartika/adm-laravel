@@ -9,6 +9,10 @@ class AdmServiceProvider extends ServiceProvider
 {
     protected $packagename = 'dartika-adm';
 
+    protected $providers = [
+        \Dartika\Adm\Providers\AdmRoutingServiceProvider::class
+    ];
+
     public function boot()
     {
         $this->publish();
@@ -18,6 +22,9 @@ class AdmServiceProvider extends ServiceProvider
 
     public function register()
     {
+        // providers
+        $this->registerProviders($this->app);
+
         // adm exception handler
         $this->registerAdmExceptions($this->app);
 
@@ -51,21 +58,23 @@ class AdmServiceProvider extends ServiceProvider
     protected function load()
     {
         // config
-        $this->mergeConfigFrom(
-            __DIR__ . '/../../config/config.php', $this->packagename
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', $this->packagename);
 
         // migrations
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-
-        // routes
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/routes.php');
 
         // translationss
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', $this->packagename);
 
         // views
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', $this->packagename);
+    }
+
+    protected function registerProviders()
+    {
+        foreach ($this->providers as $provider) {
+            $this->app->register($provider);
+        }
     }
 
     protected function registerAdmExceptions($app)
@@ -79,5 +88,15 @@ class AdmServiceProvider extends ServiceProvider
     protected function registerAdmMiddlewares($app)
     {
         $app['router']->aliasMiddleware('guestadm', \Dartika\Adm\Http\Middleware\RedirectIfAuthenticated::class);
+    }
+
+    protected function getConfig($key)
+    {
+        return $this->app['config']->get("{$this->packagename}.{$key}");
+    }
+
+    protected function getAdmPath($path)
+    {
+        return $this->getconfig('admPath') . $path;
     }
 }
