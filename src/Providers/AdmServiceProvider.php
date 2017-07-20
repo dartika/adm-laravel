@@ -2,6 +2,7 @@
 
 namespace Dartika\Adm\Providers;
 
+use Dartika\Adm\Routes\RouteLoader;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -9,27 +10,74 @@ class AdmServiceProvider extends ServiceProvider
 {
     protected $packagename = 'dartika-adm';
 
-    protected $providers = [
-        \Dartika\Adm\Providers\AdmRoutingServiceProvider::class
+    protected $providers = [];
+
+    protected $consoleCommands = [
+        \Dartika\Adm\Console\Commands\InstallerCommand::class
     ];
+
+    /**
+     * Register
+     */
+
+    public function register()
+    {
+        // providers
+        $this->registerProviders();
+
+        // adm exception handler
+        $this->registerAdmExceptions();
+
+        // adm middlewares
+        $this->registerAdmMiddlewares();
+
+        // console commands
+        $this->registerConsoleCommands();
+
+        // config
+        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', $this->packagename);
+
+        // load routes
+        $routeLoader = new RouteLoader($this->app['router']);
+        $routeLoader->load();
+    }
+
+    protected function registerProviders()
+    {
+        foreach ($this->providers as $provider) {
+            $this->app->register($provider);
+        }
+    }
+
+    protected function registerConsoleCommands()
+    {
+        foreach ($this->consoleCommands as $consoleCommand) {
+            $this->commands($consoleCommand);
+        }
+    }
+
+    protected function registerAdmExceptions()
+    {
+        $this->app->bind(
+            \Illuminate\Contracts\Debug\ExceptionHandler::class,
+            \Dartika\Adm\Exceptions\AdmHandler::class
+        );
+    }
+
+    protected function registerAdmMiddlewares()
+    {
+        $this->app['router']->aliasMiddleware('guestadm', \Dartika\Adm\Http\Middleware\RedirectIfAuthenticated::class);
+    }
+
+    /**
+     * Boot
+     */
 
     public function boot()
     {
         $this->publish();
 
         $this->load();
-    }
-
-    public function register()
-    {
-        // providers
-        $this->registerProviders($this->app);
-
-        // adm exception handler
-        $this->registerAdmExceptions($this->app);
-
-        // adm middlewares
-        $this->registerAdmMiddlewares($this->app);
     }
 
     protected function publish()
@@ -57,9 +105,6 @@ class AdmServiceProvider extends ServiceProvider
 
     protected function load()
     {
-        // config
-        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', $this->packagename);
-
         // migrations
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
@@ -68,35 +113,5 @@ class AdmServiceProvider extends ServiceProvider
 
         // views
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', $this->packagename);
-    }
-
-    protected function registerProviders()
-    {
-        foreach ($this->providers as $provider) {
-            $this->app->register($provider);
-        }
-    }
-
-    protected function registerAdmExceptions($app)
-    {
-        $app->bind(
-            \Illuminate\Contracts\Debug\ExceptionHandler::class,
-            \Dartika\Adm\Exceptions\AdmHandler::class
-        );
-    }
-
-    protected function registerAdmMiddlewares($app)
-    {
-        $app['router']->aliasMiddleware('guestadm', \Dartika\Adm\Http\Middleware\RedirectIfAuthenticated::class);
-    }
-
-    protected function getConfig($key)
-    {
-        return $this->app['config']->get("{$this->packagename}.{$key}");
-    }
-
-    protected function getAdmPath($path)
-    {
-        return $this->getconfig('admPath') . $path;
     }
 }

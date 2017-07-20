@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['namespace' => 'Dartika\Adm\Http\Controllers', 'prefix' => config('dartika-adm.prefix'), 'middleware' => 'web', 'as' => 'dartika-adm.'], function () {
+Route::group(['namespace' => 'Dartika\Adm\Http\Controllers', 'as' => 'dartika-adm.'], function () {
     Route::get('login', "Auth\LoginController@showLoginForm")->name('login');
     Route::post('login', "Auth\LoginController@login");
     Route::get('logout', "Auth\LoginController@logout")->name('logout');
