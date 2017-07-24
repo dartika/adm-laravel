@@ -15,8 +15,8 @@ class RouteLoader
 
     public function load()
     {
-        $this->loadCustomAdmRoutes();
         $this->loadDefaultAdmRoutes();
+        $this->loadCustomAdmRoutes();
     }
 
     protected function loadCustomAdmRoutes()
