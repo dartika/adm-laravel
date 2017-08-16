@@ -2,12 +2,16 @@
 
 namespace Dartika\Adm\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+
+use Illuminate\Routing\Controller as Controller;
 use Dartika\Adm\Models\AdmUser;
 use Illuminate\Http\Request;
 
 class AdmUsersController extends Controller
 {
+    use ValidatesRequests;
+
     public function index(Request $request)
     {
         $admUsers = AdmUser::paginate();
