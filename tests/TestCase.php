@@ -3,20 +3,42 @@
 namespace Dartika\Adm\Tests;
 
 use Dartika\Adm\Tests\TestHelpers;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\Storage;
-use Tests\CreatesApplication;
 
-abstract class TestCase extends BaseTestCase
+//use Illuminate\Support\Facades\Storage;
+
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    use CreatesApplication, TestHelpers;
-    use DatabaseMigrations;
-
     protected function setUp()
     {
         parent::setUp();
-        
-        Storage::fake('fs_test');
+
+        $this->withFactories(__DIR__ . '/factories');
+
+        $this->artisan('migrate', ['--database' => 'testbench']);
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
+        ]);
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [
+            'Dartika\Adm\Providers\AdmServiceProvider',
+            'Laracasts\Flash\FlashServiceProvider'
+        ];
     }
 }
