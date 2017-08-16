@@ -46,16 +46,16 @@ class AdmServiceProvider extends ServiceProvider
         }
     }
 
+    protected function registerAdmMiddlewares()
+    {
+        $this->app['router']->aliasMiddleware('guestadm', \Dartika\Adm\Http\Middleware\RedirectIfAuthenticated::class);
+    }
+
     protected function registerConsoleCommands()
     {
         foreach ($this->consoleCommands as $consoleCommand) {
             $this->commands($consoleCommand);
         }
-    }
-
-    protected function registerAdmMiddlewares()
-    {
-        $this->app['router']->aliasMiddleware('guestadm', \Dartika\Adm\Http\Middleware\RedirectIfAuthenticated::class);
     }
 
     /**
@@ -67,7 +67,9 @@ class AdmServiceProvider extends ServiceProvider
         $this->publish();
 
         $this->load();
-    }
+
+        $this->setAdmGuard();
+    }    
 
     protected function publish()
     {
@@ -102,5 +104,18 @@ class AdmServiceProvider extends ServiceProvider
 
         // views
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', $this->packagename);
+    }
+
+    protected function setAdmGuard()
+    {
+        config(['auth.guards.adm' => [
+            'driver' => 'session',
+            'provider' => 'adm_users'
+        ]]);
+
+        config(['auth.providers.adm_users' => [
+            'driver' => 'eloquent',
+            'model' => 'Dartika\Adm\Models\AdmUser'
+        ]]);
     }
 }
