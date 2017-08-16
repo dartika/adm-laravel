@@ -2,13 +2,13 @@
 
 namespace Dartika\Adm\Exceptions;
 
-use App\Exceptions\Handler;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class AdmHandler extends Handler
+class AdmHandler extends ExceptionHandler
 {
     /**
      * Render an exception into an HTTP response.

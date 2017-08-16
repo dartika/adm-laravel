@@ -25,9 +25,6 @@ class AdmServiceProvider extends ServiceProvider
         // providers
         $this->registerProviders();
 
-        // adm exception handler
-        $this->registerAdmExceptions();
-
         // adm middlewares
         $this->registerAdmMiddlewares();
 
@@ -54,14 +51,6 @@ class AdmServiceProvider extends ServiceProvider
         foreach ($this->consoleCommands as $consoleCommand) {
             $this->commands($consoleCommand);
         }
-    }
-
-    protected function registerAdmExceptions()
-    {
-        $this->app->bind(
-            \Illuminate\Contracts\Debug\ExceptionHandler::class,
-            \Dartika\Adm\Exceptions\AdmHandler::class
-        );
     }
 
     protected function registerAdmMiddlewares()
