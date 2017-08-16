@@ -35,9 +35,9 @@
 //]]></script>
     @endif
     
-    <script src="{{ mix('/js/vendor.js', '/vendor/dartika-adm') }}"></script>
-    <script src="{{ mix('/js/adminlte.js', '/vendor/dartika-adm') }}"></script>
-    <script src="{{ mix('/js/global.js', '/vendor/dartika-adm') }}"></script>
+    <script src="{{ asset('/vendor/dartika-adm/js/vendor.js') }}"></script>
+    <script src="{{ asset('/vendor/dartika-adm/js/adminlte.js') }}"></script>
+    <script src="{{ asset('/vendor/dartika-adm/js/global.js') }}"></script>
 
     @stack('js_includes')
 
