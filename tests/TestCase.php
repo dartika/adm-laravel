@@ -4,10 +4,10 @@ namespace Dartika\Adm\Tests;
 
 use Dartika\Adm\Tests\TestHelpers;
 
-//use Illuminate\Support\Facades\Storage;
-
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
+    use TestHelpers;
+
     protected function setUp()
     {
         parent::setUp();

@@ -1,23 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Dartika\Adm\Tests\Feature;
 
 use Dartika\Adm\Models\AdmUser;
 use Dartika\Adm\Tests\TestCase;
 
 class CrudAdminUsersTest extends TestCase
 {
-    protected $admUser;
-
-    protected function defaultAdmUser($attributes = [])
-    {
-        if (!$this->admUser) {
-            $this->admUser = factory(AdmUser::class)->create($attributes);
-        }
-
-        return $this->admUser;
-    }
-
     public function test_admin_can_list_admin_users()
     {
         $user = factory(AdmUser::class)->create();
