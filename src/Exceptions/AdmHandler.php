@@ -2,10 +2,10 @@
 
 namespace Dartika\Adm\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdmHandler extends ExceptionHandler
@@ -19,6 +19,10 @@ class AdmHandler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof AuthenticationException) {
+            return $this->admUnauthenticated($request, $exception);
+        }
+
         if ($request->is(config('dartika-adm.prefix') . '*')) {
             if ($exception instanceof NotFoundHttpException || $exception instanceof ModelNotFoundException) {
                 return response()->view('dartika-adm::errors.404', [], 404);
@@ -35,7 +39,7 @@ class AdmHandler extends ExceptionHandler
      * @param  \Illuminate\Auth\AuthenticationException  $exception
      * @return \Illuminate\Http\Response
      */
-    protected function unauthenticated($request, AuthenticationException $exception)
+    protected function admUnauthenticated($request, AuthenticationException $exception)
     {
         $guard = array_get($exception->guards(), 0);
 
@@ -46,7 +50,7 @@ class AdmHandler extends ExceptionHandler
 
             return redirect()->guest(route('dartika-adm.login'));
         } else {
-            return parent::unauthenticated($request, $exception);
+            return $this->unauthenticated($request, $exception);
         }
     }
 }
