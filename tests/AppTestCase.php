@@ -2,9 +2,10 @@
 
 namespace Dartika\Adm\Tests;
 
-use Tests\TestCase as BaseTestCase;
-use Illuminate\Database\Eloquent\Factory as ModelFactory;
 use Dartika\Adm\Tests\TestHelpers;
+use Illuminate\Database\Eloquent\Factory as ModelFactory;
+use Illuminate\Support\Facades\Storage;
+use Tests\TestCase as BaseTestCase;
 
 abstract class AppTestCase extends BaseTestCase
 {
@@ -13,6 +14,8 @@ abstract class AppTestCase extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
+        
+        Storage::fake('fs_test');
 
         $this->loadFactories(__DIR__ . '/factories');
     }
