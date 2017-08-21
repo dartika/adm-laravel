@@ -1,6 +1,6 @@
 const { mix } = require('laravel-mix');
 
-var ADM_DEST_FOLDER = 'public/';
+var ADM_DEST_FOLDER = 'public/vendor/dartika-adm';
 
 mix.setPublicPath(ADM_DEST_FOLDER);
 mix.setResourceRoot('/vendor/dartika-adm/');
@@ -15,7 +15,7 @@ mix.less('resources/assets/less/AdminLTE.less', 'css/admin.css') // less
              'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js',
              'node_modules/select2/dist/js/select2.js',
             ], 
-            ADM_DEST_FOLDER + 'js/vendor.js'); // vendor js
+            ADM_DEST_FOLDER + '/js/vendor.js'); // vendor js
 
 if(mix.inProduction()) {
     mix.version();

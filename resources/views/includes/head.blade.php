@@ -9,7 +9,7 @@
 <link rel="shortcut icon" href="{{ asset('/vendor/dartika-adm/img/favicon.ico') }}" type="image/x-icon">
 
 <!-- Theme style -->
-<link rel="stylesheet" type="text/css" href="{{ asset('/vendor/dartika-adm/css/admin.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ mix('/css/admin.css', '/vendor/dartika-adm') }}">
 
 @stack('css_includes')
 

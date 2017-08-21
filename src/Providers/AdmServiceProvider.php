@@ -90,7 +90,7 @@ class AdmServiceProvider extends ServiceProvider
 
         // assets
         $this->publishes([
-            __DIR__ . '/../../public' => public_path("vendor/{$this->packagename}"),
+            __DIR__ . "/../../public/vendor/{$this->packagename}" => public_path("vendor/{$this->packagename}"),
         ], 'assets');
     }
 

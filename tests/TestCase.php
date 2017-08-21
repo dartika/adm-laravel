@@ -15,6 +15,10 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $this->withFactories(__DIR__ . '/factories');
 
         $this->artisan('migrate', ['--database' => 'testbench']);
+
+        $this->app->bind('path.public', function() {
+            return __DIR__ . '/../public';
+        });
     }
 
     /**
